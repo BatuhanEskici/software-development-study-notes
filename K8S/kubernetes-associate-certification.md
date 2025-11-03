@@ -612,7 +612,7 @@ Kubernetes itself is built on a foundation of open standards and is governed by 
 
 #### docker run
 
-The command docker run -it ubuntu bash uses Docker to start a new Ubuntu container and immediately connects you to that container's command line (bash shell).
+The command `docker run -it ubuntu bash` uses Docker to start a new Ubuntu container and immediately connects you to that container's command line (bash shell).
 
 This command is typically used to quickly create an isolated environment for testing or debugging.
 
@@ -623,6 +623,8 @@ This command provides a temporary and isolated environment. When you exit the co
 This makes it ideal for testing a Linux command, experimenting with software, or debugging in a clean, isolated environment.
 
 #### kubectl get nodes
+
+kubectl get nodes lists all nodes registered in a Kubernetes cluster. Each node represents a worker machine (virtual or physical) where pods run. The command shows the node name, status (e.g., Ready), roles (like control-plane), age, and Kubernetes version
 
 ![ss-52](./images/ss-52.png)
 
