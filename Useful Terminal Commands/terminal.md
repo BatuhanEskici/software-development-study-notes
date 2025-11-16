@@ -1,4 +1,5 @@
 # Terminal
+
 `pwd`: See current directory.
 
 `<name> --prefix`: See application installation path.

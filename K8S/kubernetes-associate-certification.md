@@ -18,7 +18,7 @@ It applies to all cloud offerings, including Public, Private, and Hybrid Clouds.
 
 - Maximum control over security, data governance, and regulatory compliance.
 
-**Hybrid Cloud 🤝:** It's a blend of two or more distinct cloud infrastructures. Data and applications can move between the two environments, providing flexibility. 
+**Hybrid Cloud 🤝:** It's a blend of two or more distinct cloud infrastructures. Data and applications can move between the two environments, providing flexibility.
 
 - Applications are often designed to run across both environments. For instance, sensitive customer data may be kept in the Private Cloud (on-premises), while burst capacity or less sensitive data processing is handled by the Public Cloud. Cloud-native tools ensure consistency across both environments.
 
@@ -43,6 +43,7 @@ It applies to all cloud offerings, including Public, Private, and Hybrid Clouds.
 ## Section 2: Cloud Native Architecture Fundamentals
 
 ### Cloud Native Architecture Fundamentals
+
 The goal of Cloud Native Architecture is to effectively design applications and infrastructure.
 
 **Best Practices:**
@@ -71,7 +72,7 @@ Cloud Native Applications harness the power of the cloud to provide increased re
 
 - _Observability:_ Observability is the ability to understand the internal state of your system based on the outputs it generates. It's a critical component in diagnosing issues and understanding how an application behaves in the wild. Logging, monitoring, and tracing (collectively known as the 'three pillars of observability') are vital practices to understand the state and performance of cloud-native applications.
 
-_It is important as part of your studies especially if you’re planning on taking the KCNA exam to remember these characteristics! A friendly anagram for this is “RAOO: Racoons are Often Observant” - Raccoons Are Often Observant = Resiliency, Agility, Operability, Observability_
+_It is important as part of your studies especially if you’re planning on taking the KCNA exam to remember these characteristics! A friendly anagram for this is “RAOO: Racoons are Often Observant” - Raccoons Are Often Observant = Resiliency, Agility, Operability, Observability._
 
 ### Cloud Native Practices
 
@@ -117,7 +118,7 @@ Kubernetes progressively rolls out changes to your application or its configurat
     If no one orders coffee for an hour, you close the shop (scale to 0).
     If 50 orders come in at once, you quickly hire 5 baristas (scale up pods instantly).
 
-**How KEDA Works (Simplified)**
+**How KEDA Works:**
 
 You define a ScaledObject in Kubernetes. Inside it, you set:
 
@@ -181,9 +182,9 @@ This is also an important area for your studies especially with reference to the
 ![ss-25](./images/ss-25.png)
 
 **Graduated projects:**
-https://www.cncf.io/projects/
+<https://www.cncf.io/projects/>
 
-**Cloud Native Terminology Acronyms used in the Cloud Native Community**
+#### Cloud Native Terminology Acronyms used in the Cloud Native Community
 
 - _TOC:_ Technical Oversight Committee
 
@@ -191,7 +192,7 @@ https://www.cncf.io/projects/
 
 - _TAG:_ Technical Advisory Groups
 
-**TAG: Technical Advisory Groups**
+#### TAG: Technical Advisory Groups
 
 - Provide technical guidance across specific domains that include Storage, Security, App Delivery,
 
@@ -237,19 +238,19 @@ Kubernetes itself is built on a foundation of open standards and is governed by 
 
 - Containerization Standards
 
-    - These standards ensure that any container engine can run any container image, and that Kubernetes can reliably manage them.
+    These standards ensure that any container engine can run any container image, and that Kubernetes can reliably manage them.
 
     - _Open Container Initiative (OCI):_ This is perhaps the most critical standard. It governs the specification for two core things:
 
-        - _Image Format Specification:_ Defines how a container image must be built and packaged (e.g., Docker images are now OCI images).
+    - _Image Format Specification:_ Defines how a container image must be built and packaged (e.g., Docker images are now OCI images).
 
-        - _Runtime Specification:_ Defines how a container runtime (like runc) must execute the container.
+    - _Runtime Specification:_ Defines how a container runtime (like runc) must execute the container.
 
     - _Container Runtime Interface (CRI):_ This is a Kubernetes standard. It defines the API interface between the kubelet (the node agent) and the actual container runtime (like containerd or CRI-O).
 
 - Networking and Storage
 
-    - These standards ensure that networking and persistent storage solutions can be easily plugged into any Kubernetes cluster.
+    These standards ensure that networking and persistent storage solutions can be easily plugged into any Kubernetes cluster.
 
     - _Container Network Interface (CNI):_ This is a standard specification for writing network plugins. It ensures that various networking solutions (like Calico, Flannel, or Cilium) can be consistently integrated with Kubernetes.
 
@@ -263,139 +264,136 @@ Kubernetes itself is built on a foundation of open standards and is governed by 
 
 ## Section 3: Containers with Docker
 
-![ss-41](./images/ss-41.png)
+### Introduction to Containers
 
-### Mainframe Virtualisation
+**Mainframe (1960s–1970s) — “The First Container-Like Isolation:** Mainframes (like IBM’s big iron systems) introduced the first ideas of workload isolation.
 
-![ss-42](./images/ss-42.png)
+- LPARs (Logical Partitions): hardware-level isolation of workloads
 
-### Chroot
+- Time-sharing: multiple users isolated on the same machine
 
-![ss-43](./images/ss-43.png)
+- Jails for processes before the word “container” existed
 
-### FreeBSD Jails
+Mainframes were the first systems that allowed multiple isolated environments on one machine.
+They are the conceptual ancestors of containers.
 
-![ss-44](./images/ss-44.png)
+**chroot (1979) — “The First Lightweight Container Trick”:** chroot is a Unix command that changes the root filesystem for a process.
 
-### Linux Advancements
+**What it provides:**
 
-![ss-45](./images/ss-45.png)
-![ss-46](./images/ss-46.png)
+- Filesystem isolation
+- Prevents a process from seeing the real system tree (partially)
 
-### Virtual Machine Era
+**Limitations:**
 
-![ss-47](./images/ss-47.png)
+- No CPU/memory isolation
+- No user isolation
+- Security was weak
 
-### Docker
+chroot was the first step toward isolating processes, but it was NOT a container.
 
-![ss-48](./images/ss-48.png)
+It provided filesystem namespaces only.
 
-### Traditional Docker
+**FreeBSD Jails (2000) — “Real Containers Begin”:** FreeBSD Jails = chroot + process isolation + networking isolation
 
-![ss-49](./images/ss-49.png)
+**Features:**
 
-### Docker Desktop
+- Each jail has its own ip address
+- Its own process tree
+- Restricted root user (less escape risk)
 
-![ss-50](./images/ss-50.png)
+This was the first real container-like tech.
 
-#### docker run
+**Virtual Machines (1990s–2000s) — “Full Hardware Isolation”:** VMs use a hypervisor to create virtual hardware.
 
-The command `docker run -it ubuntu bash` uses Docker to start a new Ubuntu container and immediately connects you to that container's command line (bash shell).
+Examples:
 
-This command is typically used to quickly create an isolated environment for testing or debugging.
+- VMware
+- KVM
+- Hyper-V
+- VirtualBox
 
-![ss-51](./images/ss-51.png)
+Inside each VM:
 
-This command provides a temporary and isolated environment. When you exit the container (by typing exit), the container is stopped, and any changes you made inside it (like creating files) are lost (unless you used a volume).
+- Full OS
+- Emulated hardware
+- Strong isolation, but heavy
 
-This makes it ideal for testing a Linux command, experimenting with software, or debugging in a clean, isolated environment.
+- Full OS
+- Emulated hardware
+- Strong isolation, but heavy
 
-#### kubectl get nodes
+- Full OS
+- Emulated hardware
+- Strong isolation, but heavy
 
-kubectl get nodes lists all nodes registered in a Kubernetes cluster. Each node represents a worker machine (virtual or physical) where pods run. The command shows the node name, status (e.g., Ready), roles (like control-plane), age, and Kubernetes version
+Downside:
 
-![ss-52](./images/ss-52.png)
+- Slow to boot
+- Takes gigabytes
+- Resource-heavy
+- Hard to deploy many small apps
 
-### Container Images
+VMs solved isolation, but not efficiency.
 
-![ss-53](./images/ss-53.png)
-![ss-54](./images/ss-54.png)
-![ss-55](./images/ss-55.png)
-![ss-56](./images/ss-56.png)
+Containers would later solve this by removing the need for a full OS per app.
 
-**Dockerhub:** Enterprise-grade Docker images with built-in security, compliance, and continuous updates. Minimize vulnerabilities and deploy with confidence. We can push our docker images to container registry.
+**Linux Advancements — The Foundation of Docker:**
 
-* https://hub.docker.com/
-* https://hub.docker.com/r/wernight/funbox
+Linux enabled true containerization through Namespaces (6) and cgroups.
 
-![ss-57](./images/ss-57.png)
-![ss-58](./images/ss-58.png)
-![ss-59](./images/ss-59.png)
-![ss-60](./images/ss-60.png)
-![ss-61](./images/ss-61.png)
-![ss-62](./images/ss-62.png)
-![ss-63](./images/ss-63.png)
-![ss-64](./images/ss-64.png)
+**1. User Namespace (2002+):** Isolates user IDs.
 
-**digest:** hash of the image, will be created when the image pushed to the registry
+- Processes can be root inside the container but non-root on the host.
 
-**image id:** checksum based on the local container image used by docker for this image
+**2. PID Namespace:** Provides a separate process ID tree.
 
-![ss-65](./images/ss-65.png)
-![ss-66](./images/ss-66.png)
-![ss-67](./images/ss-67.png)
-![ss-68](./images/ss-68.png)
-![ss-69](./images/ss-69.png)
+- PID 1 inside a container controls only processes within that namespace.
 
-### Running Containers
+**3. Network Namespace:** Gives each container its own networking stack:
 
-Docker client and server running independently
+- Interfaces
+- Routing tables
+- Firewall rules
+- Loopback
 
-![ss-70](./images/ss-70.png)
-![ss-71](./images/ss-71.png)
+**4. Mount Namespace:** Provides an independent filesystem hierarchy.
 
-**docker ps:** list containers
+- Containers can mount/unmount without affecting the host.
 
-**docker ps -a:** show all containers (default shows just running)
+**5. UTS Namespace:** Isolates hostname and domain name.
 
-![ss-72](./images/ss-72.png)
+- Each container can have its own hostname.
 
-**docker rm <container_name>:** remove a container by name
+**6. IPC Namespace:** Isolates inter-process communication:
 
-**docker run –rm:** remove container after exit
+- Shared memory
+- Semaphores
+- Message queues
 
-**containerd:** container engine used by Docker
+**cgroups (Control Groups) — 2006:** Controls and limits resource usage:
 
-**docker run -it –rm <image> <command>:** override the default command in a Docker container
+- CPU
+- Memory
+- Block I/O
+- Ability to freeze or throttle processes
+- Namespaces provide isolation.
+- cgroups provide resource control.
+- Together, they form the foundation of Linux containers.
 
-**-it:** runs the container in interactive mode with a terminal
+**Docker (2013) — “The Usability Revolution”** Docker combined:
 
-**docker –help:** list all the parameters available to the Docker command
+- Namespaces (isolation)
+- cgroups (resource limits)
+- Union filesystems (layered images)
 
-**The purpose of running a container as a non-root user:** to improve security by limiting privileges
+And made them:
 
-### Container Network Services and Volumes
+- Easy
+- Portable
+- Scriptable
+- Shareable (Docker Hub)
+- Standardized (image format)
 
-**docker run -d –rm nginx:** the container will be working in the background, output we get a container id
+Docker made containers practical and accessible for developers and production systems.
 
-![ss-72](./images/ss-72.png)
-![ss-73](./images/ss-73.png)
-![ss-74](./images/ss-74.png)
-![ss-75](./images/ss-75.png)
-![ss-76](./images/ss-76.png)
-![ss-77](./images/ss-77.png)
-![ss-78](./images/ss-78.png)
-![ss-79](./images/ss-79.png)
-
-**specify the port**
-
-![ss-80](./images/ss-80.png)
-
-**docker exec:** run a command in a running container
-
-![ss-81](./images/ss-81.png)
-![ss-82](./images/ss-82.png)
-
-### Volume:
-
-![ss-83](./images/ss-83.png)
