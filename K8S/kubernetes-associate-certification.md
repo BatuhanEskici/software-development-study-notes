@@ -544,3 +544,42 @@ docker save defaults to creating an OCI-compliant archive.
 - `oci-layout`: Specifies the OCI version being used.
 
 ![docker-manifest-2](./images/docker-manifest-2.png)
+
+### Running Containers
+
+In the case of Docker Desktop, we are running both the client and the server.
+
+The container engine, which Docker is using is `containerd`.
+
+`containerd` was donated by Docker to the CNCF and is now a graduated project.
+
+We can also see `runc`, which is the reference implementation of a container runtime and again Docker donated this to the OCI, the Open Container Initiative.
+
+![docker-version](./images/docker-version.png)
+
+When a container runs, it's going to generate and give that container a random name.
+
+`docker run -it spurin/funbox --rm`: Remove the container when it exits automatically.
+
+![docker-run-2](./images/docker-run-2.png)
+
+![docker-run-3](./images/docker-run-3.png)
+
+`docker ps`: Show the running containers.
+
+`docker ps -a`: Show all containers.
+
+![docker-ps](./images/docker-ps.png)
+
+We can override the default command: `docker rubn -it spurin/funbox nyancat`
+
+We can see that the user is John and it is specified in image layers.
+
+![docker-user](./images/docker-user.png)
+
+![docker-user-2](./images/docker-user-2.png)
+
+Ideally, you want to run containers as non root users.
+
+`docker rm <container-name>`: Remove the container
+
