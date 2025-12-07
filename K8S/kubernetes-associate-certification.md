@@ -583,3 +583,83 @@ Ideally, you want to run containers as non root users.
 
 `docker rm <container-name>`: Remove the container
 
+### Container Network Services and Volumes
+
+`docker run -d --rm <image>`: -d means detach so it will be working in the background. As the output we get a container id.
+
+![docker-run-4](./images/docker-run-4.png)
+
+As we can see container published on port 80 and we can't access it easily from our local machine, so let's fix this.
+
+`docker stop <container-id>`: It is enough to write first characters of id.
+
+![docker-stop](./images/docker-stop.png)
+
+`docker run -d --rm -P <container>`: Publish all exposed ports to random ports.
+
+![docker-run-5](./images/docker-run-5.png)
+
+We can see that port 80 will be exposed (line 14).
+
+![docker-run-expose](./images/docker-run-expose.png)
+
+![nginx-curl](./images/nginx-curl.png)
+
+We can see the welcome page for nginx.
+
+![nginx-browser](./images/nginx-browser.png)
+
+Each time it will use a random port.
+
+`docker run -d --rm -p 1235:80 <container-name>`: Specify the port.
+
+![docker-run-expose-2](./images/docker-run-expose-2.png)
+
+![nginx-curl-2](./images/nginx-curl-2.png)
+
+So we will see the same result again in the new port.
+
+`docker exec -it <container-id> <default-command>`: Run a command inside container.
+
+![docker-exec](./images/docker-exec.png)
+
+We will find the where is located the file that serves nginx welcome page.
+
+![cmd-find](./images/cmd-find.png)
+
+`find / -name "index.html" 2>/dev/null`: The find command in Linux is used to search for files and directories based on name, type, size, date, or other conditions. It scans the specified directory and its sub directories to locate files matching the given criteria.
+
+`2>/dev/null`: Run find, but hide all error messages.
+
+- find / will usually throw many errors like Permission denied.
+
+- `2>/dev/null` suppresses those errors so you only see the valid results.
+
+Now we will change the content of nginx welcome page.
+
+`echo hello > /usr/share/nginx/html/index.html`
+
+- `echo hello`: Prints the text hello to standard output.
+
+- `>`: Takes the output of echo hello and writes it into a file, replacing any existing contents.
+
+- `/usr/share/nginx/html/index.html`: This is the default document root for Nginx on many Linux systems.
+
+So the command Overwrites index.html with the text hello.
+
+![nginx-content](./images/nginx-content.png)
+
+A better approach is to use a volume that contains our website and to pass the volume to the container.
+
+`exit`: Exit the container.
+
+![docker-exit](./images/docker-exit.png)
+
+The better way to achieve same result is use a volume.
+
+`docker run -d --rm -p <port> -v <local-path>:<container-path>`: A volume in Docker lets you map a folder on your host machine into a folder inside the container.
+
+![docker-path](./images/docker-path.png)
+
+![docker-volume](./images/docker-volume.png)
+
