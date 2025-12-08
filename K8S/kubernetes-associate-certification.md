@@ -193,9 +193,9 @@ Open standards govern how different components of the container ecosystem intera
 
 `docker run -it <image-name> <default-command>`:
 
--   `-i`: Keep STDIN open to interact with the container.
--   `-t`: Allocate a terminal (TTY) so output looks like a normal shell.
--   `-it`: Combine both to run the container interactively with a terminal.
+* `-i`: Keep STDIN open to interact with the container.
+* `-t`: Allocate a terminal (TTY) so output looks like a normal shell.
+* `-it`: Combine both to run the container interactively with a terminal.
 
 ![docker-run](./images/docker-run.png)
 
@@ -203,11 +203,11 @@ Open standards govern how different components of the container ecosystem intera
 
 `kubectl get nodes`: Queries the Kubernetes API server for a list of nodes (machines) in your cluster.
 
--   NAME: Node hostname or identifier.
--   STATUS: Node readiness (Ready / NotReady / Unknown).
--   ROLES: Node role (control-plane/master, worker, etc.).
--   AGE: How long the node has been part of the cluster.
--   VERSION: The Kubernetes version running on the node.
+* NAME: Node hostname or identifier.
+* STATUS: Node readiness (Ready / NotReady / Unknown).
+* ROLES: Node role (control*ane/master, worker, etc.).
+* AGE: How long the node has been part of the cluster.
+* VERSION: The Kubernetes version running on the node.
 ![kubectl-get-nodes](./images/kubectl-get-nodes.png)
 
 ### Container Image Fundamentals
