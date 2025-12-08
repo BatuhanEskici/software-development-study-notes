@@ -58,6 +58,7 @@ The goal of Cloud Native Architecture is to effectively design applications and 
 
 These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.
 
+<!-- copyright(remove) -->
 ![monolith-vs-microservice-architecture](./images/monolith-vs-microservice-architecture.png)
 
 #### Characteristics of Cloud Native Applications
@@ -102,6 +103,7 @@ Kubernetes progressively rolls out changes to your application or its configurat
 
 - _Horizontal Autoscaling:_ Scales resources by adding or removing instances (e.g., adding more Pods or virtual machines). This is also known as "scaling out" or "scaling in."
 
+<!-- copyright(remove) -->
 ![k8s-autoscaler](./images/k8s-autoscaler.png)
 
 **Real-World Daily Life Examples:**
@@ -178,6 +180,7 @@ This is also an important area for your studies especially with reference to the
 
 - **Their mission:** To make Cloud Native Computing, Ubiquitous
 
+<!-- copyright(remove) -->
 ![graduation](./images/graduation.png)
 ![technical-oversigt-committee](./images/technical-oversigt-committee.png)
 
@@ -400,11 +403,11 @@ Docker made containers practical and accessible for developers and production sy
 ### Docker Desktop Installation
 
 #### Traditional Docker
-
+<!-- copyright(remove) -->
 ![traditional-docker](./images/traditional-docker.png)
 
 #### Docker Desktop
-
+<!-- copyright(remove) -->
 ![docker-desktop](./images/docker-desktop.png)
 
 `docker run -it <image-name> <default-command>`:
@@ -415,6 +418,7 @@ Docker made containers practical and accessible for developers and production sy
 
 - `-it`: Combine both to run the container interactively with a terminal.
 
+<!-- mine(keep) -->
 ![docker-run](./images/docker-run.png)
 
 `exit`: Exit from the container.
@@ -426,7 +430,7 @@ Docker made containers practical and accessible for developers and production sy
 - ROLES: Node role (control-plane/master, worker, etc.).
 - AGE: How long the node has been part of the cluster.
 - VERSION: The Kubernetes version running on the node.
-
+<!-- mine(keep) --> 
 ![kubectl-get-nodes](./images/kubectl-get-nodes.png)
 
 ### Container Images
@@ -450,19 +454,19 @@ Docker made containers practical and accessible for developers and production sy
 - **latest:** Default tag, not the exactly latest.
 
 `docker pull <image-name>:<tag>`: Pull the image from container registry.
-
+<!-- mine(keep) --> 
 ![docker-pull](./images/docker-pull.png)
 
 To specify container registry: `docker pull docker.io/wernight/funbox:latest`
-
+<!-- mine(keep) --> 
 ![docker-pull-2](./images/docker-pull-2.png)
 
 5 layers being pulled for this image.
-
+<!-- mine(keep) --> 
 ![docker-pull-3](./images/docker-pull-3.png)
 
 5 layers are the layers that have size > 0 B.
-
+<!-- copyright(remove) -->
 ![docker-pull-4](./images/docker-pull-4.png)
 
 - A union file system essentially merges these layers into a single view as a file system, with a thin, accessible, writable layer.
@@ -486,7 +490,7 @@ But the image id differs to the digest when we actually run a docker images.
 - The image ID, however, is a checksum based on the local container image and is a checksum of the JSON configuration used by Docker for this image.
 
 `docker manifest inspect <image-name>:` Show the manifest from a registry.
-
+<!-- mine(keep) -->
 ![docker-manifest](./images/docker-manifest.png)
 
 `docker save <image-name> -o <file-name>`: Exports (saves) one or more Docker images from your local Docker to a tar archive.
@@ -496,7 +500,7 @@ This creates a portable file that contains:
 - Image layers
 - Image metadata
 - Repositories info
-
+<!-- mine(keep) -->
 ![docker-save](./images/docker-save.png)
 
 `-o funbox.tar`: -o is the short option for --output.
@@ -523,7 +527,7 @@ manifest.json describing which layers belong to which image(s), repositories or 
 - v → verbose: Show every file as you extract it.
 
 - f → file: The next argument is the filename of the archive.
-
+<!-- mine(keep) -->
 ![docker-save-2](./images/docker-save-2.png)
 
 - On newer Docker versions (especially macOS Docker Desktop),
@@ -542,7 +546,7 @@ docker save defaults to creating an OCI-compliant archive.
 - `index.json`: Entry point for the OCI format — lists the top-level manifests.
 
 - `oci-layout`: Specifies the OCI version being used.
-
+<!-- mine(keep) -->
 ![docker-manifest-2](./images/docker-manifest-2.png)
 
 ### Running Containers
@@ -554,29 +558,29 @@ The container engine, which Docker is using is `containerd`.
 `containerd` was donated by Docker to the CNCF and is now a graduated project.
 
 We can also see `runc`, which is the reference implementation of a container runtime and again Docker donated this to the OCI, the Open Container Initiative.
-
+<!-- mine(keep) -->
 ![docker-version](./images/docker-version.png)
 
 When a container runs, it's going to generate and give that container a random name.
 
 `docker run -it spurin/funbox --rm`: Remove the container when it exits automatically.
-
+<!-- mine(keep) -->
 ![docker-run-2](./images/docker-run-2.png)
-
+<!-- mine(keep) -->
 ![docker-run-3](./images/docker-run-3.png)
 
 `docker ps`: Show the running containers.
 
 `docker ps -a`: Show all containers.
-
+<!-- mine(keep) -->
 ![docker-ps](./images/docker-ps.png)
 
 We can override the default command: `docker rubn -it spurin/funbox nyancat`
 
 We can see that the user is John and it is specified in image layers.
-
+<!-- mine(keep) -->
 ![docker-user](./images/docker-user.png)
-
+<!-- mine(keep) -->
 ![docker-user-2](./images/docker-user-2.png)
 
 Ideally, you want to run containers as non root users.
@@ -586,45 +590,45 @@ Ideally, you want to run containers as non root users.
 ### Container Network Services and Volumes
 
 `docker run -d --rm <image>`: -d means detach so it will be working in the background. As the output we get a container id.
-
+<!-- mine(keep) -->
 ![docker-run-4](./images/docker-run-4.png)
 
 As we can see container published on port 80 and we can't access it easily from our local machine, so let's fix this.
 
 `docker stop <container-id>`: It is enough to write first characters of id.
-
+<!-- mine(keep) -->
 ![docker-stop](./images/docker-stop.png)
 
 `docker run -d --rm -P <container>`: Publish all exposed ports to random ports.
-
+<!-- mine(keep) -->
 ![docker-run-5](./images/docker-run-5.png)
 
 We can see that port 80 will be exposed (line 14).
-
+<!-- mine(keep) -->
 ![docker-run-expose](./images/docker-run-expose.png)
-
+<!-- mine(keep) -->
 ![nginx-curl](./images/nginx-curl.png)
 
 We can see the welcome page for nginx.
-
+<!-- mine(keep) -->
 ![nginx-browser](./images/nginx-browser.png)
 
 Each time it will use a random port.
 
 `docker run -d --rm -p 1235:80 <container-name>`: Specify the port.
-
+<!-- mine(keep) -->
 ![docker-run-expose-2](./images/docker-run-expose-2.png)
-
+<!-- mine(keep) -->
 ![nginx-curl-2](./images/nginx-curl-2.png)
 
 So we will see the same result again in the new port.
 
 `docker exec -it <container-id> <default-command>`: Run a command inside container.
-
+<!-- mine(keep) -->
 ![docker-exec](./images/docker-exec.png)
 
 We will find the where is located the file that serves nginx welcome page.
-
+<!-- mine(keep) -->
 ![cmd-find](./images/cmd-find.png)
 
 `find / -name "index.html" 2>/dev/null`: The find command in Linux is used to search for files and directories based on name, type, size, date, or other conditions. It scans the specified directory and its sub directories to locate files matching the given criteria.
@@ -646,31 +650,31 @@ Now we will change the content of nginx welcome page.
 - `/usr/share/nginx/html/index.html`: This is the default document root for Nginx on many Linux systems.
 
 So the command Overwrites index.html with the text hello.
-
+<!-- mine(keep) -->
 ![nginx-content](./images/nginx-content.png)
 
 A better approach is to use a volume that contains our website and to pass the volume to the container.
 
 `exit`: Exit the container.
-
+<!-- mine(keep) -->
 ![docker-exit](./images/docker-exit.png)
 
 The better way to achieve same result is use a volume.
 
 `docker run -d --rm -p <port> -v <local-path>:<container-path>`: A volume in Docker lets you map a folder on your host machine into a folder inside the container.
-
+<!-- mine(keep) -->
 ![docker-path](./images/docker-path.png)
-
+<!-- mine(keep) -->
 ![docker-volume](./images/docker-volume.png)
 
 ### Building Container Images
 
 A Dockerfile is quite simply a text file that contains the commands and instructions needed to assemble a container image.
-
+<!-- mine(keep) -->
 ![dockerfile](./images/dockerfile.png)
 
 You can press `i` to enter `insert mode` when you use VIM as editor.
-
+<!-- mine(keep) -->
 ![dockerfile-2](./images/dockerfile-2.png)
 
 `FROM`: A Dockerfile must begin with a FROM instruction The FROM instruction specifies the Parent Image from which you are building.
@@ -684,54 +688,5 @@ After this step we can press `ESC` to exit from insert mode and type `:wp` to sa
 ![docker-build](./images/docker-build.png)
 
 We can see our new image in the list and it has the same size with base image.
-
+<!-- mine(keep) -->
 ![docker-build-2](./images/docker-build-2.png)
-
-Normally we use `bash shell` but the image is lightweight and it doesn't have, so we will use `sh`.
-
-When we try to `git clone` we will see that we don't have GIT in container.
-
-Alpine use `APK` which means `Alpine Package Manager` and Debian based systems use `APT`.
-
-So we will install it by `APK`.
-
-![docker-build-3](./images/docker-build-3.png)
-
-![docker-build-4](./images/docker-build-4.png)
-
-Now we are able to use `git`.
-
-![docker-build-5](./images/docker-build-5.png)
-
-![docker-build-6](./images/docker-build-6.png)
-
-`ls -l`: A Linux/Unix command that lists files in long format.
-
-To compile this code, we are meant to start by running `autoreconf -i` but again, this isn't actually available in our container image environment, so let's actually install this.
-
-You can notice that when we install a new package, each time this would potentially increase our container image size.
-
-We will also need `apk add automake`.
-
-![docker-build-7](./images/docker-build-7.png)
-
-Programming languages like Golang use static compilation, but with C, typically you'd need to specify additional syntax to do this.
-
-We will execute `./configure LDFLAGS="-static"` in container.
-
-This didn't work as we don't have any compilers within our container image.
-
-Now we need these steps.
-
-- `apk add alpine-sdk`
-- `apk add ncurses-dev ncurses-static`
-- `mkdir -p /usr/lib/kbd/consolefonts /usr/share/consolefonts`
-- `./configure LDFLAGS="-static"`
-
-So, the next step is to run make to compile the source code using those settings which were actually defined during the configure process
-
-- `make`
-- `./cmatrix`
-
-![cmatrix](./images/cmatrix.png)
-
