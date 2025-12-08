@@ -393,4 +393,57 @@ After this step we can press `ESC` to exit from insert mode and type `:wp` to sa
 ![docker-build](./images/docker-build.png)
 
 We can see our new image in the list and it has the same size with the base image.
+
 ![docker-build-2](./images/docker-build-2.png)
+
+`RUN`: Docker engine will execute these statements when it see this.
+
+`WORKDIR <directory>`: Changes the working directory for executable statements. (RUN, CMD etc.)
+
+#### Multiple Stage Builds
+
+`FROM <image-name> AS <image-alias>`: Creates a named build stage used for multi-stage Docker builds.
+
+`COPY --from=<image-alias> <copy-directory> <target-directory>`: Copies only the required files from a specific build stage into the final image.
+
+If we type whoami in container we will see that we are running the container as `root` and this is not the best practice and secure.
+
+`RUN adduser -g "John Doe" -s /usr/sbin/nologin -D john`: Add this user.
+
+`RUN`: Executes commands during the image build. Each RUN creates a new image layer.
+
+`CMD`: Defines the default command that will run when the container starts.
+
+`&&`: allows you to chain multiple commands so that each command only runs if the previous one succeeded.
+
+* Example: `RUN apt-get update && apt-get install -y curl`.
+
+* `-g`: name
+* `-s`: nologin
+* `-D`: disable password
+* `-H`: doesn't create home dir
+
+`USER john`: Switch to the user that we created.
+
+`ENTRYPOINT [path]`: Defines the main command that will always run when a container starts.
+
+* Any additional arguments passed to docker run will be appended after the entrypoint.
+
+`docker buildx build --platform linux/amd64,linux/arm64 -t <image-name>`: Docker buildx is a CLI plugin that gives you access to BuildKit, Docker’s advanced image-building engine.
+
+* Multi-platform builds
+    * linux/amd64
+    * linux/arm64
+    * linux/arm/v7, etc.
+* Better caching
+    * Inline caching
+    * Remote caching
+    * Distributed build caching
+* Parallel and distributed builds
+* Additional build capabilities
+    * --load, --push
+    * Reproducible builds
+    * More flexible Dockerfile features
+* Build without needing a local Docker daemon
+
+`docker system prune`: Remove all unused containers, networks, images (both dangling and unused), and optionally, volumes.
