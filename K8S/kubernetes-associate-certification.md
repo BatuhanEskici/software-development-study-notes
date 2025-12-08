@@ -208,6 +208,7 @@ Open standards govern how different components of the container ecosystem intera
 * ROLES: Node role (control*ane/master, worker, etc.).
 * AGE: How long the node has been part of the cluster.
 * VERSION: The Kubernetes version running on the node.
+
 ![kubectl-get-nodes](./images/kubectl-get-nodes.png)
 
 ### Container Image Fundamentals
@@ -229,12 +230,15 @@ Open standards govern how different components of the container ecosystem intera
 * **latest:** The default tag, which is not guaranteed to be the absolute latest version.
 
 `docker pull <image-name>:<tag>`: Pull the image from container registry.
+
 ![docker-pull](./images/docker-pull.png)
 
 To specify container registry: `docker pull docker.io/wernight/funbox:latest`
+
 ![docker-pull-2](./images/docker-pull-2.png)
 
 5 layers being pulled for this image.
+
 ![docker-pull-3](./images/docker-pull-3.png)
 
 5 layers are the layers that have size > 0 B.
@@ -254,6 +258,7 @@ It's possible to pull an image by its digest.
 * The **Image ID** is a checksum based on the local container image's JSON configuration.
 
 `docker manifest inspect <image-name>:` Show the manifest from a registry.
+
 ![docker-manifest](./images/docker-manifest.png)
 
 `docker save <image-name> -o <file-name>`: Exports (saves) one or more Docker images from your local Docker to a tar archive.
@@ -263,6 +268,7 @@ This creates a portable file that contains:
 * Image layers
 * Image metadata
 * Repositories info
+
 ![docker-save](./images/docker-save.png)
 
 `-o funbox.tar`: `-o` is the short option for `--output`.
@@ -275,6 +281,7 @@ This creates a portable file that contains:
 * `x` → extract: Unpack the contents of the archive.
 * `v` → verbose: Show every file as it is extracted.
 * `f` → file: The next argument is the filename of the archive.
+
 ![docker-save-2](./images/docker-save-2.png)
 
 * On newer Docker versions (especially macOS Docker Desktop), `docker save` defaults to creating an **OCI-compliant archive**.
@@ -284,6 +291,7 @@ This creates a portable file that contains:
 * `manifest.json`: Describes which blobs (layers) belong to the image.
 * `index.json`: The entry point for the OCI format, listing top-level manifests.
 * `oci-layout`: Specifies the OCI version being used.
+
 ![docker-manifest-2](./images/docker-manifest-2.png)
 
 ### Managing Running Containers
@@ -292,22 +300,26 @@ In Docker Desktop, you run both the client and the server.
 
 * The container engine Docker uses is **containerd**, which was donated by Docker to the CNCF and is now a graduated project.
 * We can also see **runc**, which is the reference implementation of a container runtime, donated to the OCI (Open Container Initiative).
+
 ![docker-version](./images/docker-version.png)
 
 When a container runs, it receives a random name.
 
 `docker run -it spurin/funbox --rm`: Remove the container when it exits automatically.
+
 ![docker-run-2](./images/docker-run-2.png)
 ![docker-run-3](./images/docker-run-3.png)
 
 `docker ps`: Show the running containers.
 
 `docker ps -a`: Show all containers.
+
 ![docker-ps](./images/docker-ps.png)
 
 We can override the default command: `docker rubn -it spurin/funbox nyancat`
 
 We can see that the user is John and it is specified in image layers.
+
 ![docker-user](./images/docker-user.png)
 ![docker-user-2](./images/docker-user-2.png)
 
@@ -318,35 +330,43 @@ Ideally, containers should be run as non-root users.
 ### Container Networking and Persistent Data (Volumes)
 
 `docker run -d --rm <image>`: `-d` means detach, so the container will work in the background. The output provides a container ID.
+
 ![docker-run-4](./images/docker-run-4.png)
 
 The container is published on port 80 but is not easily accessible from the local machine, so we fix this.
 
 `docker stop <container-id>`: It is enough to write the first characters of the container ID.
+
 ![docker-stop](./images/docker-stop.png)
 
 `docker run -d --rm -P <container>`: Publish all exposed ports to random ports.
+
 ![docker-run-5](./images/docker-run-5.png)
 
 We can see that port 80 will be exposed (line 14).
+
 ![docker-run-expose](./images/docker-run-expose.png)
 ![nginx-curl](./images/nginx-curl.png)
 
 We can see the welcome page for nginx.
+
 ![nginx-browser](./images/nginx-browser.png)
 
 Each time, a random port will be used.
 
 `docker run -d --rm -p 1235:80 <container-name>`: Specify the port.
+
 ![docker-run-expose-2](./images/docker-run-expose-2.png)
 ![nginx-curl-2](./images/nginx-curl-2.png)
 
 We will see the same result again in the new port.
 
 `docker exec -it <container-id> <default-command>`: Run a command inside container.
+
 ![docker-exec](./images/docker-exec.png)
 
 We will find the location of the file that serves the nginx welcome page.
+
 ![cmd-find](./images/cmd-find.png)
 
 `find / -name "index.html" 2>/dev/null`: The `find` command searches for files and directories based on various criteria. It scans the specified directory and its subdirectories.
@@ -362,25 +382,30 @@ Now we will change the content of the nginx welcome page.
 * `/usr/share/nginx/html/index.html`: The default document root for Nginx.
 
 So the command overwrites `index.html` with the text "hello."
+
 ![nginx-content](./images/nginx-content.png)
 
 A better approach is to use a volume that contains our website and pass the volume to the container.
 
 `exit`: Exit the container.
+
 ![docker-exit](./images/docker-exit.png)
 
 The better way to achieve the same result is to use a volume.
 
 `docker run -d --rm -p <port> -v <local-path>:<container-path>`: A volume in Docker maps a folder on your host machine into a folder inside the container.
+
 ![docker-path](./images/docker-path.png)
 ![docker-volume](./images/docker-volume.png)
 
 ### Creating Container Images
 
 A Dockerfile is a text file containing the commands and instructions required to assemble a container image.
+
 ![dockerfile](./images/dockerfile.png)
 
 You can press `i` to enter `insert mode` when you use VIM as editor.
+
 ![dockerfile-2](./images/dockerfile-2.png)
 
 `FROM`: A Dockerfile must begin with a FROM instruction. The FROM instruction specifies the **Parent Image** from which you are building.
@@ -390,6 +415,7 @@ You can press `i` to enter `insert mode` when you use VIM as editor.
 After this step we can press `ESC` to exit from insert mode and type `:wp` to save and exit editor.
 
 `docker build <working-dir> -t <tag-name>`: Build a new image by configurations.
+
 ![docker-build](./images/docker-build.png)
 
 We can see our new image in the list and it has the same size with the base image.
