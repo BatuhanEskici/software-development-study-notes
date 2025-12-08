@@ -663,3 +663,75 @@ The better way to achieve same result is use a volume.
 
 ![docker-volume](./images/docker-volume.png)
 
+### Building Container Images
+
+A Dockerfile is quite simply a text file that contains the commands and instructions needed to assemble a container image.
+
+![dockerfile](./images/dockerfile.png)
+
+You can press `i` to enter `insert mode` when you use VIM as editor.
+
+![dockerfile-2](./images/dockerfile-2.png)
+
+`FROM`: A Dockerfile must begin with a FROM instruction The FROM instruction specifies the Parent Image from which you are building.
+
+`LABEL`: A Docker label is a key-value metadata field that you can attach to images, containers, volumes, or other Docker objects.
+
+After this step we can press `ESC` to exit from insert mode and type `:wp` to save and exit editor.
+
+`docker build <working-dir> -t <tag-name>`: Build a new image by configurations.
+
+![docker-build](./images/docker-build.png)
+
+We can see our new image in the list and it has the same size with base image.
+
+![docker-build-2](./images/docker-build-2.png)
+
+Normally we use `bash shell` but the image is lightweight and it doesn't have, so we will use `sh`.
+
+When we try to `git clone` we will see that we don't have GIT in container.
+
+Alpine use `APK` which means `Alpine Package Manager` and Debian based systems use `APT`.
+
+So we will install it by `APK`.
+
+![docker-build-3](./images/docker-build-3.png)
+
+![docker-build-4](./images/docker-build-4.png)
+
+Now we are able to use `git`.
+
+![docker-build-5](./images/docker-build-5.png)
+
+![docker-build-6](./images/docker-build-6.png)
+
+`ls -l`: A Linux/Unix command that lists files in long format.
+
+To compile this code, we are meant to start by running `autoreconf -i` but again, this isn't actually available in our container image environment, so let's actually install this.
+
+You can notice that when we install a new package, each time this would potentially increase our container image size.
+
+We will also need `apk add automake`.
+
+![docker-build-7](./images/docker-build-7.png)
+
+Programming languages like Golang use static compilation, but with C, typically you'd need to specify additional syntax to do this.
+
+We will execute `./configure LDFLAGS="-static"` in container.
+
+This didn't work as we don't have any compilers within our container image.
+
+Now we need these steps.
+
+- `apk add alpine-sdk`
+- `apk add ncurses-dev ncurses-static`
+- `mkdir -p /usr/lib/kbd/consolefonts /usr/share/consolefonts`
+- `./configure LDFLAGS="-static"`
+
+So, the next step is to run make to compile the source code using those settings which were actually defined during the configure process
+
+- `make`
+- `./cmatrix`
+
+![cmatrix](./images/cmatrix.png)
+
