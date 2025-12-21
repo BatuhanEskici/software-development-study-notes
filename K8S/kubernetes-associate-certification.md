@@ -473,3 +473,171 @@ If we type whoami in container we will see that we are running the container as 
 * Build without needing a local Docker daemon
 
 `docker system prune`: Remove all unused containers, networks, images (both dangling and unused), and optionally, volumes.
+
+## Section 4: Container Orchestration
+
+It is hard to manage multiple containers manually at the same time so container orchestration allows us to orchestrate multiple containers by automating them.
+
+### CRD (Custom Resource Definition)
+
+In Kubernetes, a CRD stands for Custom Resource Definition.
+
+Simply put, a CRD lets you extend Kubernetes with your own resource types, just like built-in ones such as Pod, Service, or Deployment.
+
+**What does a CRD do?**
+
+A CRD defines a new API object in Kubernetes.
+
+Once you create a CRD, you can:
+
+* Create custom resources with kubectl
+Store them in etcd
+* Manage them via the Kubernetes API
+
+Example idea:
+“I want Kubernetes to understand a new object called Database.”
+You create a CRD for Database, and then Kubernetes treats it as a first-class resource.
+
+**Basic CRD example:**
+
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: databases.example.com
+spec:
+  group: example.com
+  scope: Namespaced
+  names:
+    plural: databases
+    singular: database
+    kind: Database
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                engine:
+                  type: string
+                size:
+                  type: string
+```
+
+After applying this, you can create resources like:
+
+```yaml
+apiVersion: example.com/v1
+kind: Database
+metadata:
+  name: my-db
+spec:
+  engine: postgres
+  size: small
+
+```
+
+**Why are CRDs useful?**
+
+CRDs are heavily used in:
+
+* Operators (Prometheus Operator, ArgoCD, Cert-Manager, etc.)
+* Platform abstractions
+* Infrastructure automation
+
+Examples you may have seen:
+
+* Certificate (cert-manager)
+* IngressRoute (Traefik)
+* Application (Argo CD)
+* All of these are CRDs.
+
+**Important notes:**
+
+* CRDs are cluster-scoped (even if the custom resource is namespaced)
+* Creating a CRD does not add behavior
+* Logic comes from a controller/operator
+* Stored in etcd
+* Managed via Kubernetes API server
+
+### Features Of Container Orchestration
+
+1. Automated Deployment & Scheduling
+    * Decides where containers run (which node)
+    * Considers:
+    * CPU / memory requests
+    * Node availability
+    * Constraints & affinities
+    * Supports rolling updates and rollbacks
+
+2. Scaling (Horizontal & Vertical)
+    * Horizontal scaling
+    * Add/remove container replicas automatically
+    * Based on CPU, memory, or custom metrics
+    * Vertical scaling
+    * Adjust CPU/memory limits
+
+3. Self-Healing
+    * Automatically:
+    * Restarts failed containers
+    * Replaces unhealthy ones
+    * Reschedules containers if a node dies
+    * Uses health checks (liveness/readiness)
+
+4. Service Discovery & Load Balancing
+    * Containers get stable network identities
+    * Built-in load balancing across replicas
+    * No need to hardcode IP addresses
+
+5. Configuration & Secret Management
+    * Externalizes configuration from images
+    * Manages:
+    * Environment variables
+    * Config files
+    * Secrets (passwords, tokens, certs)
+
+6. High Availability & Fault Tolerance
+    * Distributes workloads across nodes
+    * Supports multi-zone / multi-node setups
+    * Avoids single points of failure
+
+7. Resource Management & Isolation
+    * Enforces CPU and memory limits
+    * Prevents “noisy neighbor” problems
+    * Fair resource sharing across workloads
+
+8. Rolling Updates & Rollbacks
+    * Zero-downtime deployments
+    * Gradual traffic shifting
+    * Easy rollback if something breaks
+
+9. Networking & Security
+    * Container-to-container networking
+    * Network policies (traffic rules)
+    * TLS, authentication, authorization
+    * RBAC (role-based access control)
+
+10. Observability (Monitoring & Logging)
+    * Exposes metrics
+    * Integrates with:
+    * Prometheus
+    * Grafana
+    * ELK stack
+    * Helps with alerting and troubleshooting
+
+11. Storage Orchestration
+    * Persistent volumes for stateful apps
+    * Dynamic volume provisioning
+    * Storage abstraction across cloud/on-prem
+
+12. Extensibility
+    * Custom resources & plugins
+    * Operators and controllers
+    * Integrates with CI/CD pipelines
+
+As an overview: *Container orchestration provides automated deployment, scaling, healing, networking, and lifecycle management of containers at scale.*
