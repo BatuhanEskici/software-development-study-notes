@@ -491,7 +491,7 @@ A CRD defines a new API object in Kubernetes.
 Once you create a CRD, you can:
 
 * Create custom resources with kubectl
-Store them in etcd
+* Store them in etcd
 * Manage them via the Kubernetes API
 
 Example idea:
@@ -641,3 +641,39 @@ Examples you may have seen:
     * Integrates with CI/CD pipelines
 
 As an overview: *Container orchestration provides automated deployment, scaling, healing, networking, and lifecycle management of containers at scale.*
+
+### Kubernetes Architecture
+
+#### Control Plane
+
+##### runc
+
+runc is a low-level container runtime.
+
+runc is the tool that actually creates and runs containers on Linux.
+
+**Where runc fits in the container stack:**
+
+```scss
+Kubernetes
+   ↓
+Container Runtime (containerd / CRI-O)
+   ↓
+runc
+   ↓
+Linux kernel (namespaces, cgroups)
+```
+
+* Kubernetes does not talk to runc directly
+* It talks to containerd or CRI-O
+* Those runtimes use runc to start containers
+
+**What does runc do?**
+
+* Creates containers using Linux kernel features
+* namespaces (pid, net, mount, user)
+* cgroups (CPU, memory, I/O limits)
+* Runs containers without a daemon
+* Follows the OCI (Open Container Initiative) runtime spec
+
+*runc was donated by Docker Inc and is an OCI Compatible Container Runtime.*
